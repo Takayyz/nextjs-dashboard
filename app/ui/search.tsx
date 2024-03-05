@@ -1,9 +1,19 @@
 'use client';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
 const Search = ({ placeholder }: { placeholder: string }) => {
-  const handleChange = (term: string) => console.log({term});
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const handleChange = (term: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    term ? params.set('query', term) : params.delete('query');
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (<div className="relative flex flex-1 flex-shrink-0">
     <label htmlFor="search" className="sr-only">
