@@ -4,6 +4,7 @@ import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { Invoice } from "./definitions";
 
 const INVOICES_PAGE_PATH = '/dashboard/invoices';
 
@@ -48,7 +49,7 @@ const UpdateInvoice = FormSchema.omit({
   id: true,
   date: true,
 });
-export const updateInvoice = async (id: string, formData: FormData) => {
+export const updateInvoice = async (id: Invoice['id'], formData: FormData) => {
   const {customerId, amount, status} = UpdateInvoice.parse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
@@ -73,7 +74,7 @@ export const updateInvoice = async (id: string, formData: FormData) => {
   redirect(INVOICES_PAGE_PATH);
 };
 
-export const deleteInvoice = async (id: string) => {
+export const deleteInvoice = async (id: Invoice['id']) => {
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
     revalidatePath(INVOICES_PAGE_PATH);
