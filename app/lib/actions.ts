@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { Invoice } from "./definitions";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 const INVOICES_PAGE_PATH = '/dashboard/invoices';
 
@@ -121,5 +123,25 @@ export const deleteInvoice = async (id: Invoice['id']) => {
     return {
       message: 'Database Error: Failed to Delete Invoice.',
     };
+  }
+};
+
+export const authenticate = async (
+  _: string | undefined,
+  formData: FormData,
+) => {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Someting went wrong.';
+      }
+    }
+
+    throw error;
   }
 };
