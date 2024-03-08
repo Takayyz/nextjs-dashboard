@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+const INVOICES_PAGE_PATH = '/dashboard/invoices';
+
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string(),
@@ -33,7 +35,6 @@ export const createInvoice = async (formData: FormData) => {
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
   `;
 
-  const INVOICES_PAGE_PATH = '/dashboard/invoices';
   revalidatePath(INVOICES_PAGE_PATH);
   redirect(INVOICES_PAGE_PATH);
 };
@@ -57,7 +58,12 @@ export const updateInvoice = async (id: string, formData: FormData) => {
     WHERE id = ${id}
   `;
 
-  const INVOICES_PAGE_PATH = '/dashboard/invoices';
   revalidatePath(INVOICES_PAGE_PATH);
   redirect(INVOICES_PAGE_PATH);
+};
+
+export const deleteInvoice = async (id: string) => {
+  await sql`DELETE FROM invoices WHERE id = ${id}`;
+
+  revalidatePath(INVOICES_PAGE_PATH);
 };
