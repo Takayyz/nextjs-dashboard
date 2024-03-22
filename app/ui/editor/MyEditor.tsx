@@ -22,7 +22,7 @@ export const MyEditor = ({className}: Props): JSX.Element => {
       <div className={clsx('relative max-w-4xl', className)}>
         <RichTextPlugin
           contentEditable={<ContentEditable style={{"minHeight": "300px"}} className="p-2.5 rounded-md bg-white outline-none" />}
-          placeholder={<div className="absolute top-3 left-3">type something...</div>}
+          placeholder={<div className="absolute top-3 left-3 text-gray-400">type something...</div>}
           ErrorBoundary={() => <p>Error...</p>}
         />
       </div>
