@@ -4,6 +4,7 @@ import { ComponentProps } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import clsx from "clsx";
 
 type Props = {
@@ -25,6 +26,7 @@ export const MyEditor = ({className}: Props): JSX.Element => {
           ErrorBoundary={() => <p>Error...</p>}
         />
       </div>
+      <HistoryPlugin />
     </LexicalComposer>
   );
 };
